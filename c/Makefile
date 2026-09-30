@@ -1294,6 +1294,9 @@ tests/test_qwen36_dense_idot$(EXE): tests/test_qwen36_dense_idot.c gsgemv.h qgem
 tests/test_qwen36_tokenizer$(EXE): tests/test_qwen36_tokenizer.c gsgemv.h qgemv.h sse41_kernels.h qwen36.c expert_ffn.h qwen36_tier.h st.h json.h compat.h $(QWEN36_TIER_SRC) $(CUDA_OBJ)
 	$(CC) $(QWEN36_CFLAGS) $< $(QWEN36_TIER_SRC) $(CUDA_OBJ) -o $@ $(QWEN36_LDFLAGS)
 
+# MoE router bias: exactly n_experts values loads, any other size is refused.
+tests/test_qwen36_router_bias$(EXE): tests/test_qwen36_router_bias.c qwen36.c qwen36_tier.h st.h json.h compat.h $(QWEN36_TIER_SRC) $(CUDA_OBJ)
+	$(CC) $(QWEN36_CFLAGS) $< $(QWEN36_TIER_SRC) $(CUDA_OBJ) -o $@ $(QWEN36_LDFLAGS)
 # Reproducible local timing evidence; intentionally not a noisy CI perf gate.
 tests/bench_qwen36_dense_batch$(EXE): tests/bench_qwen36_dense_batch.c gsgemv.h qgemv.h sse41_kernels.h qwen36.c qwen36_tier.h st.h json.h compat.h $(QWEN36_TIER_SRC) $(CUDA_OBJ)
 	$(CC) $(QWEN36_CFLAGS) $< $(QWEN36_TIER_SRC) $(CUDA_OBJ) -o $@ $(QWEN36_LDFLAGS)
